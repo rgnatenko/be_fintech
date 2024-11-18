@@ -66,6 +66,13 @@ export const Errors = {
   ] as const,
   InvalidTWOFA: [400, 'InvalidTWOFA', 'Invalid or expired 2FA code.'] as const,
   ExpiredTWOFA: [400, 'ExpiredTWOFA', '2FA code has expired.'] as const,
+  FailedToSend2FA: [400, 'FailedToSend2FA', 'Failed to send 2fA'] as const,
+  FailedToSendSMS: [400, 'FailedToSendSMS', 'Failed to send SMS'] as const,
+  FailedToGenerateToken: [
+    400,
+    'FailedToGenerateToken',
+    'Failed to generate token, please try again',
+  ] as const,
 };
 
 export type MyError = readonly [number, string, string, any?];

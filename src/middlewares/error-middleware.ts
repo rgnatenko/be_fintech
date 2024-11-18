@@ -2,9 +2,10 @@ import { NextFunction, Request, Response } from 'express';
 import ApiError from '../exceptions/api-error';
 import { Errors } from '../exceptions/errors';
 import { ValidationError } from 'yup';
+import logger from '../exceptions/logger';
 
 export default function (
-  err: any,
+  err: Error,
   req: Request,
   res: Response,
   next: NextFunction,
@@ -21,10 +22,7 @@ export default function (
       statusCode: 400,
       error: err.name,
       message: err.message,
-      details: {
-        record: 'User',
-        field: (err.inner as any)[0]?.path,
-      },
+      details: err.inner.map((e) => ({ field: e.path, message: e.message })),
     };
   } else if (err instanceof ApiError) {
     myError = err;
@@ -34,6 +32,7 @@ export default function (
 
   if (myError.error === Errors.UnexpectedError[1]) {
     console.log(err);
+    logger.error(err);
   }
 
   res.status(myError.statusCode).json({

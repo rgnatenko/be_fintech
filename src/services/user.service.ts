@@ -7,6 +7,7 @@ import UserDto from '../dtos/user.dto';
 import ApiError from '../exceptions/api-error';
 import { Errors } from '../exceptions/errors';
 import successAuthResponse from '../utils/successAuthResponse';
+import { randomUUID } from 'crypto';
 
 class UserService {
   async register(email: string, password: string, username: string) {
@@ -17,7 +18,8 @@ class UserService {
     }
 
     const hashPassword = await bcrypt.hash(password, 3);
-    const activationLink = String(Math.random()).slice(3);
+    const activationLink = randomUUID();
+    // const normalizedEmail = email.trim().toLowerCase();
 
     const user = await User.create({
       username,

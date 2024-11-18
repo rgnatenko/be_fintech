@@ -10,10 +10,10 @@ class UserController {
       const { email, password, username } = req.body;
       const user = await UserService.register(email, password, username);
 
-      setRefreshTokenToCookie(res, user);
+      setRefreshTokenToCookie(res, user.refreshToken);
 
       res.json(user);
-    } catch (e: any) {
+    } catch (e) {
       next(e);
     }
   }
@@ -23,10 +23,10 @@ class UserController {
       const { email, password } = req.body;
       const user = await UserService.login(email, password);
 
-      setRefreshTokenToCookie(res, user);
+      setRefreshTokenToCookie(res, user.refreshToken);
 
       res.json(user);
-    } catch (e: any) {
+    } catch (e) {
       next(e);
     }
   }
@@ -48,7 +48,7 @@ class UserController {
       res.clearCookie('refreshToken');
 
       res.json(token);
-    } catch (e: any) {
+    } catch (e) {
       next(e);
     }
   }
@@ -60,20 +60,22 @@ class UserController {
       await UserService.activate(activationLink);
 
       res.redirect(process.env.CLIENT_URL || '');
-    } catch (e: any) {
+    } catch (e) {
       next(e);
+      res.redirect(`${process.env.CLIENT_URL}/activation-failed`);
     }
   }
 
   async refresh(req: Request, res: Response, next: NextFunction) {
     try {
       const { refreshToken } = req.cookies;
-      const user = await UserService.refresh(refreshToken);
+      const { accessToken, refreshToken: newRefreshToken } =
+        await UserService.refresh(refreshToken);
 
-      setRefreshTokenToCookie(res, user.refreshToken);
+      setRefreshTokenToCookie(res, newRefreshToken);
 
-      res.json(user);
-    } catch (e: any) {
+      res.json({ accessToken });
+    } catch (e) {
       next(e);
     }
   }

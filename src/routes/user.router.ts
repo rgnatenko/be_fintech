@@ -9,14 +9,14 @@ const UserRouter = express.Router();
 
 UserRouter.post(
   '/register',
-  validateInput(registerSchema),
   rateLimiter,
+  validateInput(registerSchema),
   UserController.register,
 );
 UserRouter.post(
   '/login',
-  validateInput(registerSchema),
   rateLimiter,
+  validateInput(registerSchema),
   UserController.login,
 );
 UserRouter.post('/logout', authMiddleware, UserController.logout);

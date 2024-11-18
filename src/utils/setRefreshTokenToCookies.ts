@@ -1,13 +1,13 @@
 import { Response } from 'express';
 import { IUser } from '../models/user.model';
 
-export default function setRefreshTokenToCookie(res: Response, user: any) {
+export default function setRefreshTokenToCookie(res: Response, refreshToken: string) {
   const cookieMaxAge = 30 * 24 * 60 * 60 * 1000;
 
-  res.cookie('refreshToken', user.refreshToken, {
+  res.cookie('refreshToken', refreshToken, {
     maxAge: cookieMaxAge,
     httpOnly: true,
     sameSite: 'lax',
-    // secure: true
+    secure: process.env.NODE_ENV === 'production',
   });
 }

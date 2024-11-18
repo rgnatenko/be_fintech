@@ -19,7 +19,8 @@ class TwoFactorService {
       await TwoFactor.create({ userId, code, expiresAt });
       await sendSMS(phoneNumber, `Your 2FA code is: ${code}`);
     } catch (e) {
-      throw e;
+      console.error('Failed to send 2FA code:', e);
+      throw new ApiError(Errors.FailedToSend2FA);
     }
   }
 

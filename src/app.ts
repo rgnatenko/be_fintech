@@ -11,7 +11,12 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+    credentials: true,
+  }),
+);
 
 app.use('/auth', UserRouter);
 app.use('/2fa', TwoFactorRouter);
