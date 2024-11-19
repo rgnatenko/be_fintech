@@ -1,14 +1,35 @@
 import express from 'express';
-import mongoose from 'mongoose';
+import cors from 'cors';
 import dotenv from 'dotenv';
-import userRoutes from './routes/user.routes';
+import cookieParser from 'cookie-parser';
+import errorMiddleware from './middlewares/error-middleware';
+import UserRouter from './routes/user.router';
+import TwoFactorRouter from './routes/2fa.routes';
 
 dotenv.config();
 const app = express();
+
 app.use(express.json());
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+    credentials: true,
+  }),
+);
 
-mongoose.connect(process.env.MONGODB_URI || '');
+app.use('/auth', UserRouter);
+app.use('/2fa', TwoFactorRouter);
 
-app.use('/api/users', userRoutes);
+app.use(
+  (
+    err: Error,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction,
+  ) => {
+    errorMiddleware(err, req, res, next);
+  },
+);
 
 export default app;
