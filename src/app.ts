@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import errorMiddleware from './middlewares/error-middleware';
 import UserRouter from './routes/user.router';
 import TwoFactorRouter from './routes/2fa.routes';
+import DashboardRouter from './routes/dashboard.routes';
 
 dotenv.config();
 const app = express();
@@ -20,6 +21,7 @@ app.use(
 
 app.use('/auth', UserRouter);
 app.use('/2fa', TwoFactorRouter);
+app.use('/dashboard', DashboardRouter);
 
 app.use(
   (
