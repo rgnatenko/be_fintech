@@ -5,7 +5,7 @@ import { Errors } from '../exceptions/errors';
 
 class DashboardController {
   async getOverview(req: Request, res: Response, next: NextFunction) {
-    const userId = req.user.id;
+    const userId = req.user!.id;
 
     if (!userId) {
       throw new ApiError(Errors.Unauthorized);
@@ -27,7 +27,7 @@ class DashboardController {
   }
 
   async getCharts(req: Request, res: Response, next: NextFunction) {
-    const userId = req.user.id;
+    const userId = req.user!.id;
     let { filter } = req.body;
 
     if (!filter) {

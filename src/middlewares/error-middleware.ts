@@ -4,35 +4,47 @@ import { Errors } from '../exceptions/errors';
 import { ValidationError } from 'yup';
 import logger from '../exceptions/logger';
 
+interface MyError {
+  statusCode: number;
+  error: string;
+  message: string;
+  details?: any;
+}
+
 export default function (
   err: Error,
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
-  let myError: {
-    statusCode: number;
-    error: string;
-    message: string;
-    details: any;
-  };
+  let myError: MyError;
 
   if (err instanceof ValidationError) {
     myError = {
       statusCode: 400,
-      error: err.name,
+      error: 'ValidationError',
       message: err.message,
       details: err.inner.map((e) => ({ field: e.path, message: e.message })),
     };
   } else if (err instanceof ApiError) {
-    myError = err;
+    myError = {
+      statusCode: err.statusCode,
+      error: err.error || 'ApiError',
+      message: err.message,
+      details: err.details || null,
+    };
   } else {
-    myError = new ApiError(Errors.UnexpectedError);
+    myError = {
+      statusCode: 500,
+      error: 'UnexpectedError',
+      message: Errors.UnexpectedError[1] || 'An unexpected error occurred.',
+    };
+
+    logger.error(err);
   }
 
-  if (myError.error === Errors.UnexpectedError[1]) {
-    console.log(err);
-    logger.error(err);
+  if (myError.error === 'UnexpectedError') {
+    console.error(err);
   }
 
   res.status(myError.statusCode).json({
