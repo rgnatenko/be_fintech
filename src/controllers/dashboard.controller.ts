@@ -1,46 +1,60 @@
 import { NextFunction, Request, Response } from 'express';
 import DashboardService from '../services/dashboard.service';
 import ApiError from '../exceptions/api-error';
-import { Errors } from '../exceptions/errors';
+import { Errors, MyError } from '../exceptions/errors';
 
 class DashboardController {
-  async getOverview(req: Request, res: Response, next: NextFunction) {
-    const userId = req.user!.id;
-
-    if (!userId) {
+  private validateUser(req: Request) {
+    if (!req.user || !req.user.id) {
       throw new ApiError(Errors.Unauthorized);
     }
+    return req.user.id;
+  }
 
-    let { filter } = req.body;
+  private getFilter(filter: any) {
+    return filter || {};
+  }
 
-    if (!filter) {
-      filter = {};
+  private async handleRequest(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+    serviceMethod: (userId: string, filter: any) => Promise<any>,
+    errorType: MyError,
+  ) {
+    try {
+      const userId = this.validateUser(req);
+      const filter = this.getFilter(req.body.filter);
+      const data = await serviceMethod(userId, filter);
+
+      if (!data) {
+        throw new ApiError(errorType);
+      }
+
+      res.json({ data });
+    } catch (error) {
+      next(error);
     }
+  }
 
-    const overview = await DashboardService.getOverview(userId, filter);
-
-    if (!overview) {
-      throw new ApiError(Errors.OverviewError);
-    }
-
-    res.json({ overview });
+  async getOverview(req: Request, res: Response, next: NextFunction) {
+    return this.handleRequest(
+      req,
+      res,
+      next,
+      DashboardService.getOverview,
+      Errors.OverviewError,
+    );
   }
 
   async getCharts(req: Request, res: Response, next: NextFunction) {
-    const userId = req.user!.id;
-    let { filter } = req.body;
-
-    if (!filter) {
-      filter = {};
-    }
-
-    const chartsData = await DashboardService.getCharts(userId, filter);
-
-    if (!chartsData) {
-      throw new ApiError(Errors.ChartsError);
-    }
-
-    res.json({ chartsData });
+    return this.handleRequest(
+      req,
+      res,
+      next,
+      DashboardService.getCharts,
+      Errors.ChartsError,
+    );
   }
 }
 

@@ -1,6 +1,7 @@
 import mongoose, { ObjectId } from 'mongoose';
 import Dashboard from '../models/dashboard.model';
 import { getDaysList } from '../utils/getDaysList';
+import { createDateFilter } from '../utils/date';
 
 const months = [
   'January',
@@ -30,38 +31,19 @@ class DashboardService {
     userId: string,
     filter?: { date?: Date; month?: number; year?: number },
   ) {
-    const matchConditions: any = { user: new mongoose.Types.ObjectId(userId) };
-    const andConditions = [];
+    const matchConditions: {
+      user: mongoose.Types.ObjectId;
+      $and?: mongoose.FilterQuery<any>[];
+    } = { user: new mongoose.Types.ObjectId(userId) };
 
-    if (filter?.date) {
-      const startOfDay = new Date(filter.date);
-      startOfDay.setHours(0, 0, 0, 0);
+    const dateFilter = createDateFilter(
+      filter?.date,
+      filter?.month,
+      filter?.year,
+    );
 
-      const endOfDay = new Date(filter.date);
-      endOfDay.setHours(23, 59, 59, 999);
-
-      andConditions.push(
-        { 'revenue.date': { $gte: startOfDay, $lte: endOfDay } },
-        { 'receivables.dueDate': { $gte: startOfDay, $lte: endOfDay } },
-        { 'expenses.date': { $gte: startOfDay, $lte: endOfDay } },
-      );
-    }
-
-    if (filter?.month || filter?.year) {
-      const month = filter?.month ? filter.month - 1 : new Date().getMonth();
-      const year = filter?.year || new Date().getFullYear();
-      const startOfMonth = new Date(year, month, 1);
-      const endOfMonth = new Date(year, month + 1, 0, 23, 59, 59, 999);
-
-      andConditions.push(
-        { 'revenue.date': { $gte: startOfMonth, $lte: endOfMonth } },
-        { 'receivables.dueDate': { $gte: startOfMonth, $lte: endOfMonth } },
-        { 'expenses.date': { $gte: startOfMonth, $lte: endOfMonth } },
-      );
-    }
-
-    if (andConditions.length > 0) {
-      matchConditions.$and = andConditions;
+    if (Object.keys(dateFilter).length) {
+      matchConditions.$and = [dateFilter];
     }
 
     const result = await Dashboard.aggregate([
