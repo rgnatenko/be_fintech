@@ -73,6 +73,16 @@ export const Errors = {
     'FailedToGenerateToken',
     'Failed to generate token, please try again',
   ] as const,
+  OverviewError: [
+    400,
+    'OverviewError',
+    'Error happened while loading overview, please try again',
+  ] as const,
+  ChartsError: [
+    400,
+    'OverviewError',
+    'Error happened while loading charts, please try again',
+  ] as const,
 };
 
 export type MyError = readonly [number, string, string, any?];

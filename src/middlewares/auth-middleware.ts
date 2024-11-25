@@ -6,13 +6,12 @@ import TokenService, { TokenPayload } from '../services/token.service';
 declare global {
   namespace Express {
     export interface Request {
-      user: TokenPayload;
+      user?: TokenPayload; 
     }
   }
 }
 
 export default async function (
-  err: Error,
   req: Request,
   res: Response,
   next: NextFunction,
