@@ -10,21 +10,20 @@ import {
 
 const ContractRouter = Router();
 
+ContractRouter.use(authMiddleware);
+ContractRouter.use(rateLimiter);
+
 ContractRouter.post(
   '/',
-  authMiddleware,
-  rateLimiter,
   validateInput(createContractSchema),
   ContractController.postContract,
 );
-ContractRouter.get('/', authMiddleware, ContractController.getContracts);
+ContractRouter.get('/', ContractController.getContracts);
 ContractRouter.put(
   '/:id',
-  authMiddleware,
-  rateLimiter,
   validateInput(updateContractSchema),
   ContractController.updateContract,
 );
-ContractRouter.delete('/:id', authMiddleware, ContractController.deleteContract);
+ContractRouter.delete('/:id', ContractController.deleteContract);
 
 export default ContractRouter;

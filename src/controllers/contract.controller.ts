@@ -1,27 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
-import ApiError from '../exceptions/api-error';
-import { Errors } from '../exceptions/errors';
 import ContractService from '../services/contract.service';
 import { IContract } from '../models/contract.model';
 import { getDefaultEndDate } from '../utils/date';
+import { BaseController } from './base.controller';
 
-class ContractController {
+class ContractController extends BaseController {
   constructor() {
+    super();
     this.getContracts = this.getContracts.bind(this);
     this.postContract = this.postContract.bind(this);
     this.updateContract = this.updateContract.bind(this);
     this.deleteContract = this.deleteContract.bind(this);
-  }
-
-  private validateUser(req: Request) {
-    if (!req.user || !req.user.id) {
-      throw new ApiError(Errors.Unauthorized);
-    }
-    return req.user.id;
-  }
-
-  private getFilter(filter: any) {
-    return filter || {};
   }
 
   async getContracts(req: Request, res: Response, next: NextFunction) {

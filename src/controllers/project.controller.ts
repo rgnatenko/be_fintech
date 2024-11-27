@@ -1,27 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
-import ApiError from '../exceptions/api-error';
-import { Errors } from '../exceptions/errors';
 import { IProject } from '../models/project.model';
 import ProjectService from '../services/project.service';
 import { getDefaultEndDate } from '../utils/date';
+import { BaseController } from './base.controller';
 
-class ProjectController {
+class ProjectController extends BaseController {
   constructor() {
+    super();
     this.getProjects = this.getProjects.bind(this);
     this.postProject = this.postProject.bind(this);
     this.updateProject = this.updateProject.bind(this);
     this.deleteProject = this.deleteProject.bind(this);
-  }
-
-  private validateUser(req: Request) {
-    if (!req.user || !req.user.id) {
-      throw new ApiError(Errors.Unauthorized);
-    }
-    return req.user.id;
-  }
-
-  private getFilter(filter: any) {
-    return filter || {};
   }
 
   async getProjects(req: Request, res: Response, next: NextFunction) {

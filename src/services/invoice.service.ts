@@ -29,12 +29,16 @@ class InvoiceService {
   }
 
   async postInvoice(invoice: IInvoice) {
-    const newInvoice = await Invoice.create(invoice);
-
-    if (!newInvoice) {
-      throw new ApiError(Errors.InvoicesCreateError);
+    if (
+      !invoice.invoiceNumber ||
+      !invoice.client ||
+      !invoice.amount ||
+      !invoice.status
+    ) {
+      throw new ApiError(Errors.InvalidInvoiceData);
     }
 
+    const newInvoice = await Invoice.create(invoice);
     return newInvoice;
   }
 

@@ -1,26 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
-import ApiError from '../exceptions/api-error';
-import { Errors } from '../exceptions/errors';
 import InvoiceService from '../services/invoice.service';
 import { IInvoice } from '../models/invoice.model';
+import { BaseController } from './base.controller';
 
-class InvoiceController {
+class InvoiceController extends BaseController {
   constructor() {
+    super();
     this.getInvoices = this.getInvoices.bind(this);
     this.postInvoice = this.postInvoice.bind(this);
     this.updateInvoice = this.updateInvoice.bind(this);
     this.deleteInvoice = this.deleteInvoice.bind(this);
-  }
-
-  private validateUser(req: Request) {
-    if (!req.user || !req.user.id) {
-      throw new ApiError(Errors.Unauthorized);
-    }
-    return req.user.id;
-  }
-
-  private getFilter(filter: any) {
-    return filter || {};
   }
 
   async getInvoices(req: Request, res: Response, next: NextFunction) {

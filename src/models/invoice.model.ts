@@ -19,12 +19,13 @@ const InvoiceSchema: Schema = new Schema({
     ref: 'Client',
     required: true,
   },
-  amount: { type: Number, required: true, min: 0 },
+  amount: { type: Number, required: true, min: [0, 'Amount must be a positive'] },
   dueDate: { type: Date, required: true },
   status: {
     type: String,
     enum: ['UNPAID', 'PAID', 'OVERDUE'],
-    default: 'unpaid',
+    default: 'UNPAID',
+    required: true
   },
 });
 

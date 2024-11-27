@@ -31,12 +31,16 @@ class ProjectService {
   }
 
   async postProject(project: IProject) {
-    const newProject = await Project.create(project);
-
-    if (!newProject) {
-      throw new ApiError(Errors.ProjectsCreateError);
+    if (
+      !project.description ||
+      !project.name ||
+      !project.budget ||
+      !project.status
+    ) {
+      throw new ApiError(Errors.InvalidProjectData);
     }
 
+    const newProject = await Project.create(project);
     return newProject;
   }
 

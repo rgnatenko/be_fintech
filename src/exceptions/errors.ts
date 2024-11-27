@@ -88,10 +88,10 @@ export const Errors = {
     'ProjectsError',
     'Error happened while loading projects, please try again',
   ] as const,
-  ProjectsCreateError: [
+  InvalidProjectData: [
     400,
-    'ProjectsCreateError',
-    'Error happened while creating project, please try again',
+    'InvalidProjectData',
+    'Project data is invalid, try again',
   ] as const,
   ProjectNotFound: [404, 'ProjectNotFound', 'Project is not found'] as const,
   ContractsError: [
@@ -99,10 +99,10 @@ export const Errors = {
     'ContractsError',
     'Error happened while loading contracts, please try again',
   ] as const,
-  ContractsCreateError: [
+  InvalidContractData: [
     400,
-    'ContractsCreateError',
-    'Error happened while creating project, please try again',
+    'InvalidContractData',
+    'Contract data is invalid, try again',
   ] as const,
   ContractNotFound: [404, 'ContractNotFound', 'Contract is not found'] as const,
   InvoicesError: [
@@ -110,10 +110,10 @@ export const Errors = {
     'InvoicesError',
     'Error happened while loading invoices, please try again',
   ] as const,
-  InvoicesCreateError: [
+  InvalidInvoiceData: [
     400,
-    'InvoicesCreateError',
-    'Error happened while creating invoices, please try again',
+    'InvalidInvoiceData',
+    'Invoice data is invalid, try again',
   ] as const,
   InvoiceNotFound: [404, 'InvoiceNotFound', 'Invoice is not found'] as const,
 };

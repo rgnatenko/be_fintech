@@ -7,17 +7,26 @@ export interface IProject {
   startDate?: Date;
   endDate?: Date;
   budget: number;
-  status: string;
+  status: 'NEW' | 'IN_PROGRESS' | 'COMPLETED';
 }
 
 const ProjectSchema = new Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   name: { type: String, required: true },
   description: { type: String, required: true },
-  startDate: { type: Date },
+  startDate: { type: Date, default: Date.now },
   endDate: { type: Date },
-  budget: { type: Number, required: true },
-  status: { type: String, required: true },
+  budget: {
+    type: Number,
+    required: true,
+    min: [0, 'Budget must be a positive'],
+  },
+  status: {
+    type: String,
+    enum: ['NEW', 'IN_PROGRESS', 'COMPLETED'],
+    default: 'NEW',
+    required: true,
+  },
 });
 
 export default mongoose.model<IProject>('Project', ProjectSchema);

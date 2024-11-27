@@ -10,21 +10,20 @@ import {
 
 const InvoiceRouter = Router();
 
+InvoiceRouter.use(authMiddleware);
+InvoiceRouter.use(rateLimiter);
+
 InvoiceRouter.post(
   '/',
-  authMiddleware,
-  rateLimiter,
   validateInput(createInvoiceSchema),
   InvoiceController.postInvoice,
 );
-InvoiceRouter.get('/', authMiddleware, InvoiceController.getInvoices);
+InvoiceRouter.get('/', InvoiceController.getInvoices);
 InvoiceRouter.put(
   '/:id',
-  authMiddleware,
-  rateLimiter,
   validateInput(updateInvoiceSchema),
   InvoiceController.updateInvoice,
 );
-InvoiceRouter.delete('/:id', authMiddleware, InvoiceController.deleteInvoice);
+InvoiceRouter.delete('/:id', InvoiceController.deleteInvoice);
 
 export default InvoiceRouter;

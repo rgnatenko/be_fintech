@@ -31,12 +31,11 @@ class ContractService {
   }
 
   async postContract(contract: IContract) {
-    const newContract = await Contract.create(contract);
-
-    if (!newContract) {
-      throw new ApiError(Errors.ContractsCreateError);
+    if (!contract.contractName || !contract.client || !contract.amount) {
+      throw new ApiError(Errors.InvalidContractData);
     }
 
+    const newContract = await Contract.create(contract);
     return newContract;
   }
 

@@ -10,21 +10,20 @@ import rateLimiter from '../middlewares/rateLimit-middleware';
 
 const ProjectRouter = Router();
 
+ProjectRouter.use(authMiddleware);
+ProjectRouter.use(rateLimiter);
+
 ProjectRouter.post(
   '/',
-  authMiddleware,
-  rateLimiter,
   validateInput(createProjectSchema),
   ProjectController.postProject,
 );
-ProjectRouter.get('/', authMiddleware, ProjectController.getProjects);
+ProjectRouter.get('/', ProjectController.getProjects);
 ProjectRouter.put(
   '/:id',
-  authMiddleware,
-  rateLimiter,
   validateInput(updateProjectSchema),
   ProjectController.updateProject,
 );
-ProjectRouter.delete('/:id', authMiddleware, ProjectController.deleteProject);
+ProjectRouter.delete('/:id', ProjectController.deleteProject);
 
 export default ProjectRouter;
