@@ -2,19 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import DashboardService from '../services/dashboard.service';
 import ApiError from '../exceptions/api-error';
 import { Errors, MyError } from '../exceptions/errors';
+import { BaseController } from './base.controller';
 
-class DashboardController {
-  private validateUser(req: Request) {
-    if (!req.user || !req.user.id) {
-      throw new ApiError(Errors.Unauthorized);
-    }
-    return req.user.id;
-  }
-
-  private getFilter(filter: any) {
-    return filter || {};
-  }
-
+class DashboardController extends BaseController {
   private async handleRequest(
     req: Request,
     res: Response,

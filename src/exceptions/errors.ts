@@ -83,6 +83,39 @@ export const Errors = {
     'OverviewError',
     'Error happened while loading charts, please try again',
   ] as const,
+  ProjectsError: [
+    400,
+    'ProjectsError',
+    'Error happened while loading projects, please try again',
+  ] as const,
+  InvalidProjectData: [
+    400,
+    'InvalidProjectData',
+    'Project data is invalid, try again',
+  ] as const,
+  ProjectNotFound: [404, 'ProjectNotFound', 'Project is not found'] as const,
+  ContractsError: [
+    400,
+    'ContractsError',
+    'Error happened while loading contracts, please try again',
+  ] as const,
+  InvalidContractData: [
+    400,
+    'InvalidContractData',
+    'Contract data is invalid, try again',
+  ] as const,
+  ContractNotFound: [404, 'ContractNotFound', 'Contract is not found'] as const,
+  InvoicesError: [
+    400,
+    'InvoicesError',
+    'Error happened while loading invoices, please try again',
+  ] as const,
+  InvalidInvoiceData: [
+    400,
+    'InvalidInvoiceData',
+    'Invoice data is invalid, try again',
+  ] as const,
+  InvoiceNotFound: [404, 'InvoiceNotFound', 'Invoice is not found'] as const,
 };
 
 export type MyError = readonly [number, string, string, any?];

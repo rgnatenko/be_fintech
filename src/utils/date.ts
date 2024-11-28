@@ -18,7 +18,7 @@ export function getStartAndEndOfMonth(month?: number, year?: number) {
 
   return { startOfMonth, endOfMonth };
 }
-``
+``;
 export function createDateFilter(date?: Date, month?: number, year?: number) {
   if (date) {
     const { startOfDay, endOfDay } = getStartAndEndOfDay(date);
@@ -39,4 +39,11 @@ export function createDateFilter(date?: Date, month?: number, year?: number) {
   }
 
   return {};
+}
+
+export function getDefaultEndDate() {
+  const defaultContractEndDate = new Date();
+  defaultContractEndDate.setMonth(defaultContractEndDate.getMonth() + 1);
+
+  return defaultContractEndDate;
 }
