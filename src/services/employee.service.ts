@@ -3,8 +3,6 @@ import ApiError from '../exceptions/api-error';
 import { Errors } from '../exceptions/errors';
 import Employee, { IEmployee, Position } from '../models/employee.model';
 import Project, { IProject } from '../models/project.model';
-import { getQuery } from '../utils/query';
-import { ITask } from '../models/task.model';
 
 class EmployeeService {
   async getEmployees(
@@ -18,9 +16,7 @@ class EmployeeService {
       endDate: Date;
     },
   ) {
-    const query = getQuery(filter.contract, filter);
-
-    const employees = await Employee.find(query)
+    const employees = await Employee.find(filter)
       .skip(limit * (page - 1))
       .limit(limit);
 
@@ -74,12 +70,9 @@ class EmployeeService {
   }
 
   async assignProject(employeeId: string, projectId: string) {
-    const project = await Project.findById(projectId);
-    if (!project) throw new ApiError(Errors.ProjectNotFound);
-
     const employee = await Employee.findByIdAndUpdate(
       employeeId,
-      { $addToSet: { assignedProjects: project } },
+      { $addToSet: { assignedProjects: projectId } },
       { new: true },
     );
 
@@ -89,11 +82,8 @@ class EmployeeService {
   }
 
   async unassignProject(employeeId: string, projectId: string) {
-    const project = await Project.findById(projectId);
-    if (!project) throw new ApiError(Errors.ProjectNotFound);
-
     const employee = await Employee.findByIdAndUpdate(employeeId, {
-      $pull: { assignedProjects: { _id: projectId } },
+      $pull: { assignedProjects: projectId },
     });
 
     if (!employee) throw new ApiError(Errors.EmployeeNotFound);
@@ -101,11 +91,14 @@ class EmployeeService {
     return employee;
   }
 
-  async assignTask(employeeId: mongoose.Types.ObjectId | string, task: ITask) {
+  async assignTask(
+    employeeId: mongoose.Types.ObjectId | string,
+    taskId: mongoose.Types.ObjectId | string,
+  ) {
     const updatedEmployee = await Employee.findByIdAndUpdate(
       employeeId,
       {
-        $addToSet: { tasks: task },
+        $addToSet: { tasks: taskId },
       },
       { new: true },
     );
@@ -124,7 +117,7 @@ class EmployeeService {
     const updatedEmployee = await Employee.findByIdAndUpdate(
       employeeId,
       {
-        $pull: { tasks: { _id: taskId } },
+        $pull: { tasks: taskId },
       },
       { new: true },
     );

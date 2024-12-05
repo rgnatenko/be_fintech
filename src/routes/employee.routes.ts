@@ -4,6 +4,8 @@ import rateLimiter from '../middlewares/rateLimit-middleware';
 import validateInput from '../middlewares/validation-middleware';
 import EmployeeController from '../controllers/employee.controller';
 import {
+  assignProjectSchema,
+  assignTaskSchema,
   createEmployeeSchema,
   updateEmployeeSchema,
 } from '../validation/employeeSchema';
@@ -25,12 +27,25 @@ EmployeeRouter.put(
   EmployeeController.updateEmployee,
 );
 EmployeeRouter.delete('/:id', EmployeeController.deleteEmployee);
-EmployeeRouter.post('/:id/assign-project', EmployeeController.assignProject);
+EmployeeRouter.post(
+  '/:id/assign-project',
+  validateInput(assignProjectSchema),
+  EmployeeController.assignProject,
+);
 EmployeeRouter.post(
   '/:id/unassign-project',
+  validateInput(assignProjectSchema),
   EmployeeController.unassignProject,
 );
-EmployeeRouter.post('/:id/assign-task', EmployeeController.assignTask);
-EmployeeRouter.post('/:id/unassign-task', EmployeeController.unassignTask);
+EmployeeRouter.post(
+  '/:id/assign-task',
+  validateInput(assignTaskSchema),
+  EmployeeController.assignTask,
+);
+EmployeeRouter.post(
+  '/:id/unassign-task',
+  validateInput(assignTaskSchema),
+  EmployeeController.unassignTask,
+);
 
 export default EmployeeRouter;

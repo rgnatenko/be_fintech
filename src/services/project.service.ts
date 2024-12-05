@@ -4,7 +4,6 @@ import { Errors } from '../exceptions/errors';
 import { IEmployee } from '../models/employee.model';
 import Project, { IProject } from '../models/project.model';
 import { ITask } from '../models/task.model';
-import { getQuery } from '../utils/query';
 
 class ProjectService {
   async getProjects(
@@ -20,7 +19,7 @@ class ProjectService {
       status: string;
     },
   ) {
-    const query = getQuery(userId, filter);
+    const query = { userId, ...filter };
 
     const projects = await Project.find(query)
       .skip(limit * (page - 1))

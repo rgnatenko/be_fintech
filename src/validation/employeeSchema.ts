@@ -35,3 +35,11 @@ export const updateEmployeeSchema = Yup.object().shape({
     .of(Yup.string())
     .typeError(errorMessages.assignedProjects),
 });
+
+export const assignProjectSchema = Yup.object().shape({
+  projectId: Yup.string().required(errorMessages.required),
+});
+
+export const assignTaskSchema = Yup.object().shape({
+  taskId: Yup.string().required(errorMessages.required),
+});
