@@ -34,12 +34,8 @@ export const EmployeeSchema = new Schema({
     default: () => [],
   },
   tasks: {
-    type: [
-      {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'Task',
-      },
-    ],
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Task',
     default: () => [],
   },
 });

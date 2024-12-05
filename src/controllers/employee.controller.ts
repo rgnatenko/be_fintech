@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { getDefaultEndDate } from '../utils/date';
 import { BaseController } from './base.controller';
 import EmployeeService from '../services/employee.service';
-import { IEmployee, Position } from '../models/employee.model';
+import { Position } from '../models/employee.model';
 import mongoose from 'mongoose';
 import Project, { IProject } from '../models/project.model';
 import ApiError from '../exceptions/api-error';
@@ -46,7 +45,6 @@ class ContractController extends BaseController {
 
   async postEmployee(req: Request, res: Response, next: NextFunction) {
     try {
-      const userId = this.validateUser(req);
       const employee: PostEmployeeBody = req.body;
 
       const newEmployee = await EmployeeService.postEmployee({
@@ -142,17 +140,21 @@ class ContractController extends BaseController {
   }
 
   async assignTask(req: Request, res: Response, next: NextFunction) {
-    const employeeId = req.params.id;
-    const { taskId } = req.body;
+    try {
+      const employeeId = req.params.id;
+      const { taskId } = req.body;
 
-    const updatedEmployee = await EmployeeService.assignTask(
-      employeeId,
-      taskId,
-    );
+      const updatedEmployee = await EmployeeService.assignTask(
+        employeeId,
+        taskId,
+      );
 
-    await TaskService.addEmployee(taskId, updatedEmployee);
+      await TaskService.addEmployee(taskId, updatedEmployee);
 
-    res.status(200).json(updatedEmployee);
+      res.status(200).json(updatedEmployee);
+    } catch (e) {
+      next(e);
+    }
   }
 
   async unassignTask(req: Request, res: Response, next: NextFunction) {
