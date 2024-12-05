@@ -16,6 +16,7 @@ export const createTaskSchema = Yup.object().shape({
     .typeError('End date must be a valid date'),
   priority: Yup.string().oneOf(['URGENT', 'HIGH', 'NORMAL', 'LOW']),
   tags: Yup.array().of(Yup.string()).typeError(errorMessages.tags),
+  timeEstimate: Yup.string().required(errorMessages.required),
 });
 
 export const updateTaskSchema = Yup.object().shape({
@@ -29,4 +30,5 @@ export const updateTaskSchema = Yup.object().shape({
     .oneOf(['URGENT', 'HIGH', 'NORMAL', 'LOW'])
     .required(errorMessages.required),
   tags: Yup.array().of(Yup.string()).typeError(errorMessages.tags),
+  timeEstimate: Yup.string(),
 });

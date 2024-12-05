@@ -7,6 +7,14 @@ import ProjectService from '../services/project.service';
 import EmployeeService from '../services/employee.service';
 
 class TaskController extends BaseController {
+  constructor() {
+    super();
+    this.getTasks = this.getTasks.bind(this);
+    this.postTask = this.postTask.bind(this);
+    this.updateTask = this.updateTask.bind(this);
+    this.deleteTask = this.deleteTask.bind(this);
+  }
+
   async getTasks(req: Request, res: Response, next: NextFunction) {
     try {
       let { page, limit, filter } = req.body;

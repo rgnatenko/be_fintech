@@ -42,8 +42,9 @@ export const TaskSchema = new Schema({
   description: { type: String, required: true },
   startDate: { type: Date, default: Date.now },
   endDate: { type: Date },
-  priority: {
-    type: String,
+  priority: { type: String, enum: ['URGENT', 'HIGH', 'NORMAL', 'LOW'] },
+  tags: {
+    type: [String],
     enum: [
       '#meeting',
       '#reporting',

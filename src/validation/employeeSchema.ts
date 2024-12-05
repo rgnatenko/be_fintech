@@ -9,13 +9,6 @@ const errorMessages = {
 export const createEmployeeSchema = Yup.object().shape({
   name: Yup.string().required(errorMessages.required),
   contract: Yup.string().required(errorMessages.required),
-  startDate: Yup.date()
-    .required(errorMessages.required)
-    .typeError('Start date must be a valid date'),
-  endDate: Yup.date()
-    .required(errorMessages.required)
-    .min(Yup.ref('startDate'), 'End date must be after the start date')
-    .typeError('End date must be a valid date'),
   position: Yup.string()
     .oneOf(
       ['Manager', 'Developer', 'Designer', 'QA', 'HR'],

@@ -48,12 +48,9 @@ class ContractController extends BaseController {
     try {
       const userId = this.validateUser(req);
       const employee: PostEmployeeBody = req.body;
-      const defaultContractEndDate = getDefaultEndDate();
 
       const newEmployee = await EmployeeService.postEmployee({
         ...employee,
-        startDate: new Date(),
-        endDate: employee.endDate || defaultContractEndDate,
         assignedProjects: [],
         tasks: [],
       });

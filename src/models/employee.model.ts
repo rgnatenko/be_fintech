@@ -9,13 +9,13 @@ export interface IEmployee {
   position: Position;
   contract: mongoose.Schema.Types.ObjectId | string;
   startDate: Date;
-  endDate: Date;
+  endDate: Date | null;
   assignedProjects: mongoose.Schema.Types.ObjectId | string[];
   tasks: mongoose.Schema.Types.ObjectId | string[];
 }
 
 export const EmployeeSchema = new Schema({
-  name: { type: mongoose.Schema.Types.ObjectId, required: true },
+  name: { type: String, required: true },
   position: {
     type: String,
     enum: ['Manager', 'Developer', 'Designer', 'QA', 'HR'],
@@ -27,16 +27,16 @@ export const EmployeeSchema = new Schema({
     required: true,
   },
   startDate: { type: Date, default: Date.now },
-  endDate: { type: Date },
+  endDate: { type: Date, default: null },
   assignedProjects: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: [mongoose.Schema.Types.ObjectId],
     ref: 'Project',
     default: () => [],
   },
   tasks: {
     type: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: [mongoose.Schema.Types.ObjectId],
         ref: 'Task',
       },
     ],
