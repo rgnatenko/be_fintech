@@ -1,3 +1,3 @@
-export function getQuery(userId: string, filter: any) {
-  return { userId, ...filter };
+export function getQuery(id: string, filter: any) {
+  return { id, ...filter };
 }

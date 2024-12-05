@@ -40,6 +40,7 @@ class ProjectController extends BaseController {
 
       const newProject = await ProjectService.postProject({
         ...project,
+        admins: [],
         startDate: new Date(),
         endDate: project.endDate || defaultProjectEndDate,
         status: project.status || 'NEW',
