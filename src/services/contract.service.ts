@@ -1,7 +1,6 @@
 import ApiError from '../exceptions/api-error';
 import { Errors } from '../exceptions/errors';
 import Contract, { IContract } from '../models/contract.model';
-import { getQuery } from '../utils/query';
 
 class ContractService {
   async getContracts(
@@ -17,7 +16,10 @@ class ContractService {
       amount: number;
     },
   ) {
-    const query = getQuery(userId, filter);
+    const query = {
+      userId,
+      ...filter,
+    };
 
     const contracts = await Contract.find(query)
       .skip(limit * (page - 1))

@@ -1,7 +1,6 @@
 import ApiError from '../exceptions/api-error';
 import { Errors } from '../exceptions/errors';
 import Invoice, { IInvoice, InvoiceStatus } from '../models/invoice.model';
-import { getQuery } from '../utils/query';
 
 class InvoiceService {
   async getInvoices(
@@ -15,7 +14,10 @@ class InvoiceService {
       status: InvoiceStatus;
     },
   ) {
-    const query = getQuery(userId, filter);
+    const query = {
+      userId,
+      ...filter,
+    };
 
     const invoices = await Invoice.find(query)
       .skip(limit * (page - 1))
