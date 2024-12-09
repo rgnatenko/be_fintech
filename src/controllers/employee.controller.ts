@@ -108,12 +108,12 @@ class ContractController extends BaseController {
       const employeeId = req.params.id;
       const { projectId } = req.body;
 
+      await ProjectService.addAdmin(projectId, employeeId);
+
       const updatedEmployee = await EmployeeService.assignProject(
         employeeId,
         projectId,
       );
-
-      await ProjectService.addAdmin(projectId, updatedEmployee._id);
 
       res.status(200).json(updatedEmployee);
     } catch (e) {
@@ -143,6 +143,8 @@ class ContractController extends BaseController {
     try {
       const employeeId = req.params.id;
       const { taskId } = req.body;
+
+      await TaskService.getTaskById(taskId);
 
       const updatedEmployee = await EmployeeService.assignTask(
         employeeId,
