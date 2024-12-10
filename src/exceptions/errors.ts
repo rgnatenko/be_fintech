@@ -116,6 +116,37 @@ export const Errors = {
     'Invoice data is invalid, try again',
   ] as const,
   InvoiceNotFound: [404, 'InvoiceNotFound', 'Invoice is not found'] as const,
+  EmployeesError: [
+    400,
+    'EmployeesError',
+    'Error happened while loading employees, please try again',
+  ] as const,
+  InvalidEmployeeData: [
+    400,
+    'InvalidEmployeeData',
+    'Employee data is invalid, try again',
+  ] as const,
+  EmployeeNotFound: [404, 'EmployeeNotFound', 'Employee is not found'] as const,
+  InvalidProjectIds: [
+    400,
+    'InvalidProjectIds',
+    'One or more project IDs are invalid.',
+  ] as const,
+  TasksError: [
+    400,
+    'TasksError',
+    'Error happened while loading tasks, please try again',
+  ] as const,
+  InvalidTaskData: [
+    400,
+    'InvalidTaskData',
+    'Task data is invalid, try again',
+  ] as const,
+  TaskNotFound: [
+    404,
+    'TaskNotFound',
+    'Task is not found'
+  ] as const,
 };
 
 export type MyError = readonly [number, string, string, any?];

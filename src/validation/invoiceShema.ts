@@ -8,6 +8,7 @@ const errorMessages = {
 };
 
 export const createInvoiceSchema = Yup.object().shape({
+  client: Yup.string().required(errorMessages.required),
   invoiceNumber: Yup.number()
     .typeError(errorMessages.invoiceNumber)
     .required(errorMessages.required),
