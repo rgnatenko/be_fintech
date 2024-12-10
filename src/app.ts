@@ -8,6 +8,9 @@ import TwoFactorRouter from './routes/2fa.routes';
 import DashboardRouter from './routes/dashboard.routes';
 import ProjectRouter from './routes/project.routes';
 import ContractRouter from './routes/contract.routes';
+import EmployeeRouter from './routes/employee.routes';
+import TaskRouter from './routes/task.router';
+import InvoiceRouter from './routes/invoice.routes';
 
 dotenv.config();
 const app = express();
@@ -26,6 +29,9 @@ app.use('/2fa', TwoFactorRouter);
 app.use('/dashboard', DashboardRouter);
 app.use('/projects', ProjectRouter);
 app.use('/contracts', ContractRouter);
+app.use('/invoices', InvoiceRouter);
+app.use('/employees', EmployeeRouter);
+app.use('/tasks', TaskRouter);
 
 app.use(
   (

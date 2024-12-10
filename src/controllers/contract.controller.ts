@@ -40,6 +40,7 @@ class ContractController extends BaseController {
 
       const newContract = await ContractService.postContract({
         ...contract,
+        employees: [],
         startDate: new Date(),
         endDate: contract.endDate || defaultContractEndDate,
         userId,

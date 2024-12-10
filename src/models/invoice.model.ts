@@ -16,16 +16,19 @@ const InvoiceSchema: Schema = new Schema({
   invoiceNumber: { type: String, required: true, unique: true, trim: true },
   client: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Client',
     required: true,
   },
-  amount: { type: Number, required: true, min: [0, 'Amount must be a positive'] },
+  amount: {
+    type: Number,
+    required: true,
+    min: [0, 'Amount must be a positive'],
+  },
   dueDate: { type: Date, required: true },
   status: {
     type: String,
     enum: ['UNPAID', 'PAID', 'OVERDUE'],
     default: 'UNPAID',
-    required: true
+    required: true,
   },
 });
 

@@ -4,7 +4,7 @@ import { Errors } from '../exceptions/errors';
 
 const rateLimiter = rateLimit({
   windowMs: 5 * 60 * 1000,
-  limit: 5,
+  limit: 10,
   message: new ApiError(Errors.RateLimit),
   standardHeaders: true,
   legacyHeaders: false,
