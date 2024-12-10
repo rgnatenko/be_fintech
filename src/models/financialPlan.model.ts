@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 
 export interface IFinancialPlan {
   projectId: mongoose.Types.ObjectId | string;
-  month: string;
+  month: number;
   budgetedHours: number;
   actualHours: number;
   budge: number;
@@ -16,7 +16,7 @@ const FinancialPlanSchema = new Schema({
     ref: 'Project',
     required: true,
   },
-  month: { type: String, required: true },
+  month: { type: Number, required: true },
   budgetedHours: {
     type: Number,
     required: true,

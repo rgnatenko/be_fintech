@@ -2,21 +2,9 @@ import mongoose, { ObjectId } from 'mongoose';
 import Dashboard from '../models/dashboard.model';
 import { getDaysList } from '../utils/getDaysList';
 import { createDateFilter } from '../utils/date';
+import { getMonths } from '../utils/getMonths';
 
-const months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
+const months = getMonths();
 
 const expenseTypes = [
   'Transfer between cards',
