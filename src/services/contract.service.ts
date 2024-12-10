@@ -16,7 +16,10 @@ class ContractService {
       amount: number;
     },
   ) {
-    const query = { userId, ...filter };
+    const query = {
+      userId,
+      ...filter,
+    };
 
     const contracts = await Contract.find(query)
       .skip(limit * (page - 1))

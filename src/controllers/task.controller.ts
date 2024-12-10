@@ -35,12 +35,12 @@ class TaskController extends BaseController {
 
       const newTask = await TaskService.postTask({
         ...task,
-        tags: task.tags || [],
-        startDate: new Date(),
-        endDate: task.endDate || defaultProjectEndDate,
-        status: task.status || 'Not-started',
-        priority: task.priority || 'NORMAL',
-        employees: [],
+        tags: task.tags ?? [],
+        startDate: task.startDate ?? new Date(),
+        endDate: task.endDate ?? defaultProjectEndDate,
+        status: task.status ?? 'Not-started',
+        priority: task.priority ?? 'NORMAL',
+        employees: task.employees ?? [],
       });
 
       await ProjectService.addTask(newTask.projectId, newTask._id);
@@ -55,7 +55,8 @@ class TaskController extends BaseController {
     try {
       const taskId = req.params.id;
       const { ...data } = req.body;
-      const taskToUpdate = await TaskService.getTaskById(taskId);
+
+      await TaskService.getTaskById(taskId);
 
       const updatedTask = await TaskService.updateTask(taskId, data);
 

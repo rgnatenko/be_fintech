@@ -3,7 +3,6 @@ import ApiError from '../exceptions/api-error';
 import { Errors } from '../exceptions/errors';
 import { IEmployee } from '../models/employee.model';
 import Project, { IProject } from '../models/project.model';
-import { ITask } from '../models/task.model';
 
 class ProjectService {
   async getProjects(
@@ -19,7 +18,10 @@ class ProjectService {
       status: string;
     },
   ) {
-    const query = { userId, ...filter };
+    const query = {
+      userId,
+      ...filter,
+    };
 
     const projects = await Project.find(query)
       .skip(limit * (page - 1))

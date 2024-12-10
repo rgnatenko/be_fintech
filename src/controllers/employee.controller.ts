@@ -17,6 +17,10 @@ interface PostEmployeeBody {
   endDate: Date;
 }
 
+interface AssignProjectBody {
+  projectId: string;
+}
+
 class ContractController extends BaseController {
   constructor() {
     super();
@@ -106,7 +110,7 @@ class ContractController extends BaseController {
   async assignProject(req: Request, res: Response, next: NextFunction) {
     try {
       const employeeId = req.params.id;
-      const { projectId } = req.body;
+      const { projectId }: AssignProjectBody = req.body;
 
       await ProjectService.addAdmin(projectId, employeeId);
 

@@ -45,15 +45,7 @@ export const TaskSchema = new Schema({
   priority: { type: String, enum: ['URGENT', 'HIGH', 'NORMAL', 'LOW'] },
   tags: {
     type: [String],
-    enum: [
-      '#meeting',
-      '#reporting',
-      '#presentation',
-      '#development',
-      '#testing',
-      '#maintenance',
-      '#cleanup',
-    ],
+    enum: Object.values(Tag),
     required: true,
   },
   timeEstimate: { type: String, required: true },

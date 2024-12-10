@@ -14,7 +14,10 @@ class InvoiceService {
       status: InvoiceStatus;
     },
   ) {
-    const query = { userId, ...filter };
+    const query = {
+      userId,
+      ...filter,
+    };
 
     const invoices = await Invoice.find(query)
       .skip(limit * (page - 1))

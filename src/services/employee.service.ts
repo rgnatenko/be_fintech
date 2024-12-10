@@ -10,7 +10,7 @@ class EmployeeService {
     limit: number = 100,
     filter: {
       name: string;
-      contract: string;
+      contract?: string;
       position: Position;
       startDate: Date;
       endDate: Date;
