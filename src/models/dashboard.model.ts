@@ -1,35 +1,46 @@
 import mongoose from 'mongoose';
 
-export interface Dashboard {
-  user: mongoose.Types.ObjectId;
-  revenue: {
-    amount: number;
-    date: NativeDate;
-    source: string;
-  }[];
-  receivables: {
-    amount: number;
-    client: string;
-    dueDate: NativeDate;
-    status: 'Pending' | 'Paid' | 'Error';
-  }[];
-  expenses: {
-    amount: number;
-    date: NativeDate;
-    category: string;
-    notes?: string | null | undefined;
-  }[];
+export interface IDashboardRevenue {
+  amount: number;
+  date: NativeDate;
+  source: string;
 }
 
-const RevenueSchema = new mongoose.Schema({
+export interface IDashboardReceivable {
+  amount: number;
+  client: string;
+  dueDate: NativeDate;
+  status: 'Pending' | 'Paid' | 'Error';
+}
+
+export interface IDashboardExpense {
+  amount: number;
+  date: NativeDate;
+  category:
+    | 'TransferBetweenCards'
+    | 'CashWithdrawn'
+    | 'Food'
+    | 'Taxes'
+    | 'Rent';
+  notes?: string | null | undefined;
+}
+
+export interface Dashboard {
+  user: mongoose.Types.ObjectId;
+  revenues: IDashboardRevenue[];
+  receivables: IDashboardReceivable[];
+  expenses: IDashboardExpense[];
+}
+
+const RevenuesSchema = new mongoose.Schema({
   amount: { type: Number, required: true },
-  source: { type: String, required: true },
-  date: { type: Date, required: true },
+  source: { type: mongoose.Types.ObjectId, required: true },
+  date: { type: Date, default: Date.now(), required: true },
 });
 
 const ReceivablesSchema = new mongoose.Schema({
   amount: { type: Number, required: true },
-  client: { type: String, required: true },
+  client: { type: mongoose.Types.ObjectId, required: true },
   dueDate: { type: Date, required: true },
   status: {
     type: String,
@@ -44,7 +55,7 @@ const ExpensesSchema = new mongoose.Schema({
     type: String,
     enum: ['TransferBetweenCards', 'CashWithdrawn', 'Food', 'Taxes', 'Rent'],
   },
-  date: { type: Date, required: true },
+  date: { type: Date, default: Date.now(), required: true },
   notes: { type: String },
 });
 
@@ -55,7 +66,7 @@ const DashboardSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    revenue: [RevenueSchema],
+    revenues: [RevenuesSchema],
     receivables: [ReceivablesSchema],
     expenses: [ExpensesSchema],
   },

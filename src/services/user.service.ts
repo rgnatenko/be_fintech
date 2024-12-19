@@ -19,7 +19,6 @@ class UserService {
 
     const hashPassword = await bcrypt.hash(password, 3);
     const activationLink = randomUUID();
-    // const normalizedEmail = email.trim().toLowerCase();
 
     const user = await User.create({
       username,
@@ -32,7 +31,6 @@ class UserService {
       email,
       `${process.env.API_URL}/auth/activate/${activationLink}`,
     );
-    const userDto = new UserDto(user);
 
     return successAuthResponse(user);
   }
@@ -83,6 +81,16 @@ class UserService {
 
     const user = await User.findById((userData as any).id);
     return successAuthResponse(user as any);
+  }
+
+  async getUserById(id: string) {
+    const user = await User.findById(id);
+
+    if (!user) {
+      throw new ApiError(Errors.UserNotFound);
+    }
+
+    return user;
   }
 }
 
