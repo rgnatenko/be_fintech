@@ -142,10 +142,26 @@ export const Errors = {
     'InvalidTaskData',
     'Task data is invalid, try again',
   ] as const,
-  TaskNotFound: [
+  TaskNotFound: [404, 'TaskNotFound', 'Task is not found'] as const,
+  FinancialPlanError: [
+    400,
+    'FinancialPlanError',
+    'Error happened while loading financial plans, please try again',
+  ] as const,
+  InvalidFinancialPlanDataData: [
+    400,
+    'InvalidFinancialPlanDataData',
+    'Financial Plan data is invalid, try again',
+  ] as const,
+  FinancialPlanNotFound: [
     404,
-    'TaskNotFound',
-    'Task is not found'
+    'FinancialPlanNotFound',
+    'Financial plan is not found',
+  ] as const,
+  DashboardDataNotFound: [
+    404,
+    'DashboardDataNotFound',
+    'Dashboard data is not found',
   ] as const,
 };
 

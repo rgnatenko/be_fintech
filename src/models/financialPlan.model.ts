@@ -10,6 +10,15 @@ export interface IFinancialPlan {
   actualExpenses: number;
 }
 
+export type IFinancialPlanBody = Partial<{
+  month: number;
+  budgetedHours: number;
+  actualHours: number;
+  budge: number;
+  tedExpenses: number;
+  actualExpenses: number;
+}>;
+
 const FinancialPlanSchema = new Schema({
   projectId: {
     type: mongoose.Schema.Types.ObjectId,

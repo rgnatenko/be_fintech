@@ -34,6 +34,16 @@ class ProjectService {
     return projects;
   }
 
+  async getProject(id: string | mongoose.Types.ObjectId) {
+    const project = await Project.findById(id);
+
+    if (!project) {
+      throw new ApiError(Errors.ProjectNotFound);
+    }
+
+    return project;
+  }
+
   async postProject(project: IProject) {
     if (
       !project.description ||

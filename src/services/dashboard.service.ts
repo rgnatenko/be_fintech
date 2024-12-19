@@ -1,8 +1,16 @@
-import mongoose, { ObjectId } from 'mongoose';
-import Dashboard from '../models/dashboard.model';
+import mongoose from 'mongoose';
+import Dashboard, {
+  IDashboardExpense,
+  IDashboardReceivable,
+  IDashboardRevenue,
+} from '../models/dashboard.model';
 import { getDaysList } from '../utils/getDaysList';
 import { createDateFilter } from '../utils/date';
 import { getMonths } from '../utils/getMonths';
+import ApiError from '../exceptions/api-error';
+import { Errors } from '../exceptions/errors';
+import User from '../models/user.model';
+import UserService from './user.service';
 
 const months = getMonths();
 
@@ -38,7 +46,7 @@ class DashboardService {
       { $match: matchConditions },
       {
         $project: {
-          totalRevenue: { $sum: '$revenue.amount' },
+          totalRevenue: { $sum: '$revenues.amount' },
           totalReceivables: { $sum: '$receivables.amount' },
           pendingReceivables: {
             $sum: {
@@ -76,7 +84,7 @@ class DashboardService {
 
       if (filter.startDate) {
         filterOptions.$and.push({
-          'revenue.date': { $gte: new Date(filter.startDate) },
+          'revenues.date': { $gte: new Date(filter.startDate) },
         });
         filterOptions.$and.push({
           'expenses.date': { $gte: new Date(filter.startDate) },
@@ -85,7 +93,7 @@ class DashboardService {
 
       if (filter?.endDate) {
         filterOptions.$and.push({
-          'revenue.date': { $lte: new Date(filter.endDate) },
+          'revenues.date': { $lte: new Date(filter.endDate) },
         });
         filterOptions.$and.push({
           'expenses.date': { $lte: new Date(filter.endDate) },
@@ -107,7 +115,7 @@ class DashboardService {
                 as: 'month',
                 in: {
                   $reduce: {
-                    input: '$revenue',
+                    input: '$revenues',
                     initialValue: 0,
                     in: {
                       $add: [
@@ -196,7 +204,7 @@ class DashboardService {
                 as: 'day',
                 in: {
                   $reduce: {
-                    input: '$revenue',
+                    input: '$revenues',
                     initialValue: 0,
                     in: {
                       $add: [
@@ -254,6 +262,52 @@ class DashboardService {
     ]);
 
     return result;
+  }
+
+  async createRevenue(userId: string, revenue: IDashboardRevenue) {
+    await UserService.getUserById(revenue.source);
+
+    const dashboard = await Dashboard.findByIdAndUpdate(
+      userId,
+      { $addToSet: { revenues: revenue } },
+      { new: true, runValidators: true },
+    );
+
+    if (!dashboard) {
+      throw new ApiError(Errors.DashboardDataNotFound);
+    }
+
+    return dashboard;
+  }
+
+  async createReceivable(userId: string, receivable: IDashboardReceivable) {
+    await UserService.getUserById(receivable.client);
+
+    const dashboard = await Dashboard.findByIdAndUpdate(
+      userId,
+      { $addToSet: { receivables: receivable } },
+      { new: true, runValidators: true },
+    );
+
+    if (!dashboard) {
+      throw new ApiError(Errors.DashboardDataNotFound);
+    }
+
+    return dashboard;
+  }
+
+  async createExpense(userId: string, expense: IDashboardExpense) {
+    const dashboard = await Dashboard.findByIdAndUpdate(
+      userId,
+      { $addToSet: { expenses: expense } },
+      { new: true, runValidators: true },
+    );
+
+    if (!dashboard) {
+      throw new ApiError(Errors.DashboardDataNotFound);
+    }
+
+    return dashboard;
   }
 }
 

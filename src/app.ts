@@ -11,6 +11,7 @@ import ContractRouter from './routes/contract.routes';
 import EmployeeRouter from './routes/employee.routes';
 import TaskRouter from './routes/task.router';
 import InvoiceRouter from './routes/invoice.routes';
+import FinancialPlanRouter from './routes/financialPlan.routes';
 
 dotenv.config();
 const app = express();
@@ -32,6 +33,7 @@ app.use('/contracts', ContractRouter);
 app.use('/invoices', InvoiceRouter);
 app.use('/employees', EmployeeRouter);
 app.use('/tasks', TaskRouter);
+app.use('/financial-plans', FinancialPlanRouter);
 
 app.use(
   (
